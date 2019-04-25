@@ -26,7 +26,7 @@ deps = {
         "plyvel==1.0.5",
         "py-evm==0.2.0a42",
         "web3==4.4.1",
-        "lahja @ git+https://git@github.com/lithp/lahja@d69aea8020e8d89dfdac50dc19878b516feabd4c",
+        "lahja @ git+https://git@github.com/lithp/lahja@9dfdc6767af707fc90c423c8aae2932309842aaf",
         "termcolor>=1.1.0,<2.0.0",
         "uvloop==0.11.2;platform_system=='Linux' or platform_system=='Darwin' or platform_system=='FreeBSD'",  # noqa: E501
         "websockets==5.0.1",

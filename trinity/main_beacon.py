@@ -104,31 +104,6 @@ def trinity_boot(args: Namespace,
         kill_process_gracefully(database_server_process, logger)
         ArgumentParser().error(message="Timed out waiting for database start")
 
-    def kill_trinity_with_reason(reason: str) -> None:
-        kill_trinity_gracefully(
-            trinity_config,
-            logger,
-            (),
-            plugin_manager,
-            main_endpoint,
-            reason=reason
-        )
-
-    main_endpoint.subscribe(
-        ShutdownRequest,
-        lambda ev: kill_trinity_with_reason(ev.reason)
-    )
-
-    plugin_manager.prepare(args, trinity_config, extra_kwargs)
-
-    try:
-        loop = asyncio.get_event_loop()
-        loop.add_signal_handler(signal.SIGTERM, lambda: kill_trinity_with_reason("SIGTERM"))
-        loop.run_forever()
-        loop.close()
-    except KeyboardInterrupt:
-        kill_trinity_with_reason("CTRL+C / Keyboard Interrupt")
-
 
 @setup_cprofiler('run_database_process')
 @with_queued_logging

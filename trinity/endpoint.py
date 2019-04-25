@@ -1,3 +1,4 @@
+import asyncio
 from typing import (
     Tuple,
 )
@@ -78,7 +79,7 @@ class TrinityMainEventBusEndpoint(TrinityEventBusEndpoint):
         """
         self.available_endpoints = tuple()
 
-        def handle_new_endpoints(ev: EventBusConnected) -> None:
+        async def handle_new_endpoints(ev: EventBusConnected) -> None:
             # In a perfect world, we should only reach this code once for every endpoint.
             # However, we check `is_connected_to` here as a safe guard because theoretically
             # it could happen that a (buggy, malicious) plugin raises the `EventBusConnected`
@@ -88,13 +89,16 @@ class TrinityMainEventBusEndpoint(TrinityEventBusEndpoint):
                 self.logger.info(
                     "EventBus of main process connecting to EventBus %s", ev.connection_config.name
                 )
-                self.connect_to_endpoints_blocking(ev.connection_config)
+                await self.connect_to_endpoints(ev.connection_config)
 
             self.available_endpoints = self.available_endpoints + (ev.connection_config,)
             self.logger.debug("New EventBus Endpoint connected %s", ev.connection_config.name)
             # Broadcast available endpoints to all connected endpoints, giving them
             # a chance to cross connect
-            self.broadcast_nowait(AvailableEndpointsUpdated(self.available_endpoints))
+            await self.broadcast(AvailableEndpointsUpdated(self.available_endpoints))
             self.logger.debug("Connected EventBus Endpoints %s", self.available_endpoints)
 
-        self.subscribe(EventBusConnected, handle_new_endpoints)
+        def spawn_handle_new_endpoints(ev: EventBusConnected) -> None:
+            asyncio.ensure_future(handle_new_endpoints(ev))
+
+        self.subscribe(EventBusConnected, spawn_handle_new_endpoints)
