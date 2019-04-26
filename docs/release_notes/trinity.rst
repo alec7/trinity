@@ -4,7 +4,6 @@ Trinity
 Unreleased (latest source)
 --------------------------
 
-- `#483 <https://github.com/ethereum/trinity/pull/483>`_: Performance: Speed up normalization of peer messages
 - `#441 <https://github.com/ethereum/trinity/pull/441>`_: Feature: Run with any custom network ID, as long as you specify a genesis file
 - `#436 <https://github.com/ethereum/trinity/pull/436>`_: Feature: Connect to preferred nodes even when discovery is disabled
 - `#518 <https://github.com/ethereum/trinity/pull/518>`_: Feature: Create log directory for you, if data dir is empty
@@ -16,6 +15,7 @@ Unreleased (latest source)
 - `#389 <https://github.com/ethereum/trinity/pull/389>`_: Bugfix: Always return contiguous headers from header syncer
 - `#389 <https://github.com/ethereum/trinity/pull/389>`_: Performance: When switching sync to a new lead peer, don't backtrack to importing old headers
 - `#386 <https://github.com/ethereum/trinity/pull/386>`_: Performance: Slightly reduce eventbus traffic that the peer pool causes
+- `#483 <https://github.com/ethereum/trinity/pull/483>`_: Performance: Speed up normalization of peer messages
 
 0.1.0-alpha.23
 --------------------------
